@@ -1,0 +1,39 @@
+<div class="flex flex-col w-full h-screen bg-[#29252D] max-h-screen">
+  <div class="flex h-3/12 w-full justify-center items-center">
+    <div class="swiper mySwiper lg:full md:full w-[320px] mt-12 relative">
+      <div class="swiper-wrapper">
+        <div
+          *ngFor="let profile of profiles; let i = index"
+          class="swiper-slide"
+        >
+          <lib-circle-progress
+            [imageUrl]="profile.imageUrl"
+            value="90"
+            max="100"
+            *ngIf="profile.id == friendId"
+            style="width: 52px"
+          />
+          <img
+            (click)="profileSelected(profile, i)"
+            *ngIf="profile.id !== friendId"
+            class="rounded-full"
+            style="width: 36px; height: 36px"
+            [src]="profile.imageUrl"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex h-full w-full justify-center mt-2">
+    <app-message-body
+      class="w-full"
+      [messages]="messages"
+      [slideIndex]="currentSlide"
+      [profiles]="profiles"
+      [friendId]="friendId"
+      [personId]="personId"
+      (profileChange)="onProfileChange($event)"
+    ></app-message-body>
+  </div>
+</div>

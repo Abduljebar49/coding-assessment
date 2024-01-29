@@ -1,0 +1,10 @@
+.scroll-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap; /* This ensures the children elements stay in one line */
+}
+
+.swiper-slide {
+  width: 60px;
+}
+

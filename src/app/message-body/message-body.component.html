@@ -1,0 +1,129 @@
+<div class="mx-auto max-w-md w-[370px] h-full">
+  <div class="swiper h-full" #swiperContainer>
+    <div class="swiper-wrapper h-full">
+      <div
+        class="swiper-slide w-[300px] p-2 bg-zinc-800 rounded-xl wide-inner-shadow items-between"
+        *ngFor="let profile of profiles"
+        style="background-color: #29252d !important; height: fit-content"
+      >
+        <div
+          class="flex flex-col space-y-4 overflow-y-auto mb-4 w-full max-h-4/6 pl-7 pr-4 py-4"
+        >
+          <div
+            class="flex flex-col space-y-4 overflow-y-auto w-full"
+            style="height: auto; max-height: 60vh; overflow-y: auto"
+          >
+            <div
+              class="w-full text-white max-w-xs text-[8.61px] text-start"
+              *ngFor="let message of messages; let i = index"
+            >
+              <div
+                class="flex w-full"
+                [class]="
+                  message.sender !== personId
+                    ? 'justify-start text-start '
+                    : 'justify-end text-end'
+                "
+              >
+                <div
+                  class="bg-[#3a3541] rounded-tl-lg rounded-tr-lg p-3"
+                  [class]="
+                    message.sender !== personId
+                      ? 'rounded-br-lg'
+                      : 'rounded-bl-lg'
+                  "
+                  style="width: fit-content; max-width: 80%"
+                >
+                  <div *ngIf="message.type == 'text'">
+                    {{ message.message }}
+                  </div>
+                  <div class="flex flex-col" *ngIf="message.type == 'image'">
+                    <img [src]="message.fileUrl" alt="Image preview" />
+                    <p>{{ message.message }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex w-full">
+            <div class="relative w-full bg-[#26232b] rounded-[13px]">
+              <!-- Container for File Preview -->
+              <div
+                *ngIf="selectedFile && profile.id == friendId"
+                class="file-preview absolute -top-12 left-0 z-20"
+              >
+                <img
+                  *ngIf="isImageFile"
+                  [src]="filePreviewUrl"
+                  alt="Image preview"
+                  class="max-h-20 max-w-20"
+                />
+                <button
+                  class="absolute top-0 right-0 border border-red rounded-full h-4 w-4 text-[8px] text-red-800 font-bold"
+                  (click)="clearFile()"
+                >
+                  X
+                </button>
+              </div>
+
+              <!-- Container for Text Area and Emoji Picker -->
+              <div class="flex flex-col pt-4">
+                <div
+                  class="absolute bottom-full right-0 z-10"
+                  *ngIf="showEmojiPicker && profile.id == friendId"
+                >
+                  <emoji-mart
+                    (emojiSelect)="addEmoji($event)"
+                    class="mb-2"
+                    style="width: 280px; height: 200px"
+                  ></emoji-mart>
+                </div>
+
+                <!-- Text Area -->
+                <div class="flex w-full">
+                  <textarea
+                    id="message"
+                    rows="4"
+                    class="block msg-inner-shadow bg-[#26232b] text-white text-opacity-70 font-medium font-['Gilroy'] leading-3 p-2.5 w-full text-sm rounded-lg"
+                    placeholder="Your comment"
+                    ngModel
+                    [(ngModel)]="message"
+                    (ngModelChange)="messageChanges($event)"
+                  ></textarea>
+                  <div
+                    class="absolute inset-y-0 end-0 top-4 flex items-center pe-3"
+                  >
+                    <div
+                      class="flex flex-col justify-center items-center gap-[5px]"
+                    >
+                      <img
+                        src="assets/icons/send.svg"
+                        (click)="sendMessage()"
+                        alt=""
+                      />
+                      <input
+                        type="file"
+                        id="fileInput"
+                        accept="image/*"
+                        (change)="onFileSelected($event)"
+                        hidden
+                      />
+                      <label for="fileInput" class="file-upload-label">
+                        <img src="assets/icons/atach.svg" alt="Attach" />
+                      </label>
+                      <img
+                        src="assets/icons/emoji.svg"
+                        (click)="toggleEmojiPicker()"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
